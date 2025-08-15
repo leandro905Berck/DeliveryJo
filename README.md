@@ -1,9 +1,3 @@
-Replit-Commit-Author: Agent
-Replit-Commit-Session-Id: 5e5ec4ea-3b62-4fbd-8ff5-a1174ccc19b4
-Replit-Commit-Checkpoint-Type: full_checkpoint
-Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/9c9f4b74-e164-4666-aba2-45fabd100490/5e5ec4ea-3b62-4fbd-8ff5-a1174ccc19b4/8PQBQkQ
-
-
 # Hot Dog da Dona Jo - Sistema de Delivery
 
 ## Descrição
