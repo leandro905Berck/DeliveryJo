@@ -61,7 +61,7 @@ $stmt = $pdo->query("
     LEFT JOIN acompanhamentos a ON pi.tipo_item = 'acompanhamento' AND pi.item_id = a.id
     JOIN pedidos p ON pi.pedido_id = p.id
     WHERE p.status = 'entregue'
-    GROUP BY pi.tipo_item, pi.item_id
+    GROUP BY pi.tipo_item, pi.item_id, l.nome, a.nome
     ORDER BY total_vendido DESC
     LIMIT 5
 ");
