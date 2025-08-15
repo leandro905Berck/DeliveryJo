@@ -62,10 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $params = $ids;
             
             if (isAdmin()) {
-                $where_condition = "destinatario = 'admin'";
+                $where_condition = "destinatario = ?";
                 $params[] = 'admin';
             } elseif (isLoggedIn()) {
-                $where_condition = "destinatario = 'cliente' AND cliente_id = ?";
+                $where_condition = "destinatario = ? AND cliente_id = ?";
+                $params[] = 'cliente';
                 $params[] = $_SESSION['cliente_id'];
             }
             

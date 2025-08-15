@@ -26,10 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $stmt->execute([$pedido_id]);
                 
                 // Add notification for admin
-                addNotification($pdo, 'entrega_confirmada', 'Entrega Confirmada', "Cliente confirmou o recebimento do pedido #$pedido_id", 'admin', null, $pedido_id);
+                $notification_result = addNotification($pdo, 'entrega_confirmada', 'Entrega Confirmada', "Cliente confirmou o recebimento do pedido #$pedido_id", 'admin', null, $pedido_id);
                 
-                $message = 'Entrega confirmada com sucesso! Obrigado pela preferência.';
-                $message_type = 'success';
+                if ($notification_result) {
+                    $message = 'Entrega confirmada com sucesso! Obrigado pela preferência.';
+                    $message_type = 'success';
+                } else {
+                    $message = 'Entrega confirmada, mas houve um problema ao notificar o admin.';
+                    $message_type = 'warning';
+                }
             } else {
                 $message = 'Pedido não encontrado ou não está disponível para confirmação.';
                 $message_type = 'danger';
