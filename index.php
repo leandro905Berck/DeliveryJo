@@ -117,7 +117,7 @@ $acompanhamentos = $stmt->fetchAll();
 </div>
 
 <!-- Floating WhatsApp Button -->
-<button class="whatsapp-fab" onclick="window.open('https://wa.me/5511999999999', '_blank')" title="Fale conosco no WhatsApp">
+<button class="whatsapp-fab" onclick="window.open('https://wa.me/5519993636087', '_blank')" title="Fale conosco no WhatsApp">
     <i class="fab fa-whatsapp"></i>
 </button>
 
