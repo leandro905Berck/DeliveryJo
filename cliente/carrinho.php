@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         case 'add':
             // Get item details
             $table = $item_type === 'lanche' ? 'lanches' : 'acompanhamentos';
-            $stmt = $pdo->prepare("SELECT * FROM $table WHERE id = ? AND ativo = 1");
+            $stmt = $pdo->prepare("SELECT * FROM $table WHERE id = ? AND ativo = TRUE");
             $stmt->execute([$item_id]);
             $item = $stmt->fetch();
             

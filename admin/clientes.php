@@ -34,7 +34,7 @@ $params = [];
 
 if ($status_filter !== '') {
     $where_conditions[] = "c.ativo = ?";
-    $params[] = (int)$status_filter;
+    $params[] = $status_filter === '1' ? TRUE : FALSE;
 }
 
 if ($bairro_filter) {
@@ -61,7 +61,7 @@ $stmt = $pdo->prepare("
     JOIN bairros b ON c.bairro_id = b.id
     LEFT JOIN pedidos p ON c.id = p.cliente_id
     $where_clause
-    GROUP BY c.id
+    GROUP BY c.id, c.nome, c.email, c.telefone, c.endereco, c.bairro_id, c.senha, c.ativo, c.created_at, b.nome, b.valor_frete
     ORDER BY c.created_at DESC
 ");
 $stmt->execute($params);
