@@ -68,6 +68,9 @@ try {
             <h5><i class="fas fa-info-circle me-2"></i>Informações do Pedido</h5>
             <p><strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($pedido['created_at'])) ?></p>
             <p><strong>Status:</strong> <span class="badge status-<?= $pedido['status'] ?>"><?= ucfirst($pedido['status']) ?></span></p>
+            <?php if ($pedido['status'] === 'entregue' && $pedido['confirmado_cliente']): ?>
+            <p><strong>Confirmação:</strong> <span class="text-success"><i class="fas fa-check-circle me-1"></i>Confirmado pelo cliente</span></p>
+            <?php endif; ?>
             <p><strong>Subtotal:</strong> <?= formatPrice($pedido['total_produtos']) ?></p>
             <p><strong>Frete:</strong> <?= formatPrice($pedido['frete']) ?></p>
             <p><strong>Total:</strong> <strong class="text-success"><?= formatPrice($pedido['total_geral']) ?></strong></p>

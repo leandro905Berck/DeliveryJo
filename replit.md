@@ -22,6 +22,13 @@ Preferred communication style: Simple, everyday language.
 - **Cart System**: Client-side cart functionality with add, remove, and quantity update operations
 - **Notification System**: Class-based notification manager with automatic cleanup and positioning
 
+### Backend Architecture
+- **Database**: PostgreSQL with proper boolean handling and GROUP BY compliance
+- **Order Management**: Complete order lifecycle from placement to customer confirmation
+- **Notification System**: Admin and customer notifications for order status changes
+- **Payment Integration**: Multiple payment methods (cash, PIX, debit/credit cards)
+- **Delivery Confirmation**: Customer-initiated delivery confirmation system
+
 ### UI/UX Design Decisions
 - **Color Scheme**: Primary red theme (#dc3545) with secondary yellow accents for food industry appeal
 - **Interactive Elements**: Card hover animations, tooltips, and smooth transitions for better user engagement
@@ -33,6 +40,11 @@ Preferred communication style: Simple, everyday language.
 - **Client-Side Validation**: JavaScript form validation for immediate user feedback
 - **Auto-Hide Alerts**: Automatic dismissal of notification messages for better user experience
 - **Tooltip Integration**: Bootstrap tooltips for additional user guidance
+
+### Order Flow and Customer Experience
+- **Delivery Confirmation**: Customers can confirm receipt when order status is "entregando"
+- **Status Tracking**: Real-time order status updates with notifications
+- **Payment Selection**: Required payment method selection during checkout
 
 ## External Dependencies
 

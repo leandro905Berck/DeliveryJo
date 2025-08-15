@@ -5,6 +5,42 @@ include '../includes/functions.php';
 
 requireLogin();
 
+$message = '';
+$message_type = '';
+
+// Handle delivery confirmation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    $pedido_id = (int)($_POST['pedido_id'] ?? 0);
+    $action = $_POST['action'];
+    
+    if ($pedido_id > 0 && $action === 'confirmar_entrega') {
+        try {
+            // Verify order belongs to customer and is in "entregando" status
+            $stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id = ? AND cliente_id = ? AND status = 'entregando'");
+            $stmt->execute([$pedido_id, $_SESSION['cliente_id']]);
+            $pedido = $stmt->fetch();
+            
+            if ($pedido) {
+                // Update order status to delivered and mark as confirmed by customer
+                $stmt = $pdo->prepare("UPDATE pedidos SET status = 'entregue', confirmado_cliente = TRUE WHERE id = ?");
+                $stmt->execute([$pedido_id]);
+                
+                // Add notification for admin
+                addNotification($pdo, 'entrega_confirmada', 'Entrega Confirmada', "Cliente confirmou o recebimento do pedido #$pedido_id", 'admin', null, $pedido_id);
+                
+                $message = 'Entrega confirmada com sucesso! Obrigado pela preferência.';
+                $message_type = 'success';
+            } else {
+                $message = 'Pedido não encontrado ou não está disponível para confirmação.';
+                $message_type = 'danger';
+            }
+        } catch (PDOException $e) {
+            $message = 'Erro ao confirmar entrega. Tente novamente.';
+            $message_type = 'danger';
+        }
+    }
+}
+
 // Get customer orders with details
 $stmt = $pdo->prepare("
     SELECT p.*, 
@@ -21,7 +57,7 @@ $stmt = $pdo->prepare("
     LEFT JOIN lanches l ON pi.tipo_item = 'lanche' AND pi.item_id = l.id
     LEFT JOIN acompanhamentos a ON pi.tipo_item = 'acompanhamento' AND pi.item_id = a.id
     WHERE p.cliente_id = ?
-    GROUP BY p.id
+    GROUP BY p.id, p.cliente_id, p.total_produtos, p.frete, p.total_geral, p.status, p.observacoes, p.endereco_entrega, p.created_at, p.updated_at, p.forma_pagamento, p.confirmado_cliente
     ORDER BY p.created_at DESC
 ");
 $stmt->execute([$_SESSION['cliente_id']]);
@@ -37,6 +73,14 @@ include '../includes/header.php';
             <i class="fas fa-plus me-2"></i>Fazer Novo Pedido
         </a>
     </div>
+
+    <?php if (!empty($message)): ?>
+    <div class="alert alert-<?= $message_type ?> alert-dismissible fade show">
+        <i class="fas fa-<?= $message_type === 'success' ? 'check-circle' : 'exclamation-circle' ?> me-2"></i>
+        <?= htmlspecialchars($message) ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <?php endif; ?>
 
     <?php if (empty($pedidos)): ?>
     <div class="text-center py-5">
@@ -111,7 +155,7 @@ include '../includes/header.php';
                                 'pendente' => 'Aguardando confirmação',
                                 'aceito' => 'Pedido aceito',
                                 'preparando' => 'Preparando seu pedido',
-                                'entregando' => 'Saiu para entrega',
+                                'entregando' => 'Saiu para entrega - aguardando confirmação',
                                 'entregue' => 'Pedido entregue',
                                 'cancelado' => 'Pedido cancelado'
                             ];
@@ -127,13 +171,23 @@ include '../includes/header.php';
                             <small class="text-warning">
                                 <i class="fas fa-clock me-1"></i>Aguardando
                             </small>
-                            <?php elseif (in_array($pedido['status'], ['aceito', 'preparando', 'entregando'])): ?>
+                            <?php elseif (in_array($pedido['status'], ['aceito', 'preparando'])): ?>
                             <small class="text-info">
                                 <i class="fas fa-spinner fa-spin me-1"></i>Em andamento
                             </small>
+                            <?php elseif ($pedido['status'] === 'entregando'): ?>
+                            <form method="POST" style="display: inline-block;">
+                                <input type="hidden" name="pedido_id" value="<?= $pedido['id'] ?>">
+                                <input type="hidden" name="action" value="confirmar_entrega">
+                                <button type="submit" class="btn btn-success btn-sm" 
+                                        onclick="return confirm('Confirmar que você recebeu o pedido?')">
+                                    <i class="fas fa-check me-1"></i>Confirmar Entrega
+                                </button>
+                            </form>
                             <?php elseif ($pedido['status'] === 'entregue'): ?>
                             <small class="text-success">
-                                <i class="fas fa-check-circle me-1"></i>Finalizado
+                                <i class="fas fa-check-circle me-1"></i>
+                                <?= $pedido['confirmado_cliente'] ? 'Confirmado por você' : 'Entregue' ?>
                             </small>
                             <?php else: ?>
                             <small class="text-danger">
