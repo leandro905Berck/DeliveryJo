@@ -8,8 +8,8 @@
                 </div>
                 <div class="col-md-3">
                     <h6>Contato</h6>
-                    <p class="mb-1"><i class="fas fa-phone me-2"></i>(11) 99999-9999</p>
-                    <p class="mb-0"><i class="fas fa-envelope me-2"></i>contato@hotdogdonajo.com</p>
+                    <p class="mb-1"><i class="fas fa-phone me-2"></i>(19) 99363-6087</p>
+                    <p class="mb-0"><i class="fas fa-envelope me-2"></i>hotdogdadonajo@gmail.com</p>
                 </div>
                 <div class="col-md-3">
                     <h6>Horário de Funcionamento</h6>
@@ -19,7 +19,7 @@
             </div>
             <hr class="my-3">
             <div class="text-center">
-                <p class="mb-0">&copy; 2024 Hot Dog da Dona Jo. Todos os direitos reservados.</p>
+                <p class="mb-0">&copy; 2025 Hot Dog da Dona Jo. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
