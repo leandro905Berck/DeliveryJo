@@ -375,25 +375,35 @@ body {
 }
 
 /* Floating Action Button */
-.fab {
+.whatsapp-fab {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--success-color), #34ce57);
+    background: linear-gradient(135deg, #25d366, #128c7e);
     color: white;
     border: none;
-    box-shadow: 0 4px 20px rgba(40,167,69,0.3);
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
     font-size: 1.5rem;
     z-index: 1000;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
-.fab:hover {
+.whatsapp-fab:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(40,167,69,0.4);
+    box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+    color: white;
+}
+
+.whatsapp-fab:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.25);
 }
 
 /* Product Grid */

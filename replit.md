@@ -27,6 +27,7 @@ Preferred communication style: Simple, everyday language.
 - **Interactive Elements**: Card hover animations, tooltips, and smooth transitions for better user engagement
 - **Responsive Design**: Bootstrap grid system for mobile-first responsive layout
 - **Visual Hierarchy**: Card-based layout for menu items with prominent call-to-action buttons
+- **WhatsApp Integration**: Fixed floating action button with proper alignment and WhatsApp brand colors
 
 ### Form and Validation Architecture
 - **Client-Side Validation**: JavaScript form validation for immediate user feedback
