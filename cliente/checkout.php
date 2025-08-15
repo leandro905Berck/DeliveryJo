@@ -31,9 +31,14 @@ $total = $subtotal + $frete;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
     $observacoes = cleanInput($_POST['observacoes'] ?? '');
     $endereco_entrega = cleanInput($_POST['endereco_entrega'] ?? '');
+    $forma_pagamento = cleanInput($_POST['forma_pagamento'] ?? '');
     
     if (empty($endereco_entrega)) {
         $errors[] = 'Endereço de entrega é obrigatório';
+    }
+    
+    if (empty($forma_pagamento)) {
+        $errors[] = 'Forma de pagamento é obrigatória';
     }
     
     if (empty($errors)) {
@@ -41,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
             $pdo->beginTransaction();
             
             // Insert order
-            $stmt = $pdo->prepare("INSERT INTO pedidos (cliente_id, total_produtos, frete, total_geral, observacoes, endereco_entrega) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$_SESSION['cliente_id'], $subtotal, $frete, $total, $observacoes, $endereco_entrega]);
+            $stmt = $pdo->prepare("INSERT INTO pedidos (cliente_id, total_produtos, frete, total_geral, observacoes, endereco_entrega, forma_pagamento) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$_SESSION['cliente_id'], $subtotal, $frete, $total, $observacoes, $endereco_entrega, $forma_pagamento]);
             $pedido_id = $pdo->lastInsertId();
             
             // Insert order items
@@ -141,6 +146,41 @@ include '../includes/header.php';
                             <label for="endereco_entrega" class="form-label">Endereço Completo</label>
                             <textarea class="form-control" id="endereco_entrega" name="endereco_entrega" rows="3" required><?= htmlspecialchars($_POST['endereco_entrega'] ?? $cliente['endereco']) ?></textarea>
                             <div class="invalid-feedback">Por favor, informe o endereço de entrega.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-credit-card me-2"></i>Forma de Pagamento</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="forma_pagamento" id="dinheiro" value="dinheiro" <?= ($_POST['forma_pagamento'] ?? '') === 'dinheiro' ? 'checked' : '' ?> required>
+                                <label class="form-check-label" for="dinheiro">
+                                    <i class="fas fa-money-bill-wave me-2"></i>Dinheiro
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="forma_pagamento" id="pix" value="pix" <?= ($_POST['forma_pagamento'] ?? '') === 'pix' ? 'checked' : '' ?> required>
+                                <label class="form-check-label" for="pix">
+                                    <i class="fas fa-qrcode me-2"></i>PIX
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="forma_pagamento" id="cartao_debito" value="cartao_debito" <?= ($_POST['forma_pagamento'] ?? '') === 'cartao_debito' ? 'checked' : '' ?> required>
+                                <label class="form-check-label" for="cartao_debito">
+                                    <i class="fas fa-credit-card me-2"></i>Cartão de Débito
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="forma_pagamento" id="cartao_credito" value="cartao_credito" <?= ($_POST['forma_pagamento'] ?? '') === 'cartao_credito' ? 'checked' : '' ?> required>
+                                <label class="form-check-label" for="cartao_credito">
+                                    <i class="fas fa-credit-card me-2"></i>Cartão de Crédito
+                                </label>
+                            </div>
+                            <div class="invalid-feedback">Por favor, selecione uma forma de pagamento.</div>
                         </div>
                     </div>
                 </div>

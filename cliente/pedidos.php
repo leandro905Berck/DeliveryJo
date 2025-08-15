@@ -8,13 +8,13 @@ requireLogin();
 // Get customer orders with details
 $stmt = $pdo->prepare("
     SELECT p.*, 
-           GROUP_CONCAT(
+           STRING_AGG(
                CONCAT(pi.quantidade, 'x ', 
                       CASE 
                           WHEN pi.tipo_item = 'lanche' THEN l.nome 
                           ELSE a.nome 
                       END
-               ) SEPARATOR ', '
+               ), ', '
            ) as itens
     FROM pedidos p
     LEFT JOIN pedido_itens pi ON p.id = pi.pedido_id

@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             }
             
             if ($where_condition) {
-                $stmt = $pdo->prepare("UPDATE notificacoes SET lida = 1 WHERE id IN ($placeholders) AND $where_condition");
+                $stmt = $pdo->prepare("UPDATE notificacoes SET lida = TRUE WHERE id IN ($placeholders) AND $where_condition");
                 $success = $stmt->execute($params);
                 
                 $response['success'] = $success;
